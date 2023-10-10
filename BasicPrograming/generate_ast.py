@@ -155,11 +155,14 @@ def from_json(ast_json):
 
 #------------------------------------------------------------------------------
 if __name__ == "__main__":
+    f = open('example.json', 'w')
     if len(sys.argv) > 1:
         # Some test code...
         # Do trip from C -> ast -> dict -> ast -> json, then print.
         ast_dict = file_to_dict(sys.argv[1])
         ast = from_dict(ast_dict)
         print(to_json(ast, sort_keys=True, indent=4))
+        f.write(to_json(ast, sort_keys=True, indent=4))
+        f.close()
     else:
         print("Please provide a filename as argument")
