@@ -11,22 +11,69 @@
                         "_nodetype": "If",
                         "cond": {
                             "_nodetype": "BinaryOp",
-                            "coord": "./BasicPrograming/test2.c:3:7",
+                            "coord": "BasicPrograming/test2.c:3:7",
                             "left": {
                                 "_nodetype": "ID",
-                                "coord": "./BasicPrograming/test2.c:3:7",
+                                "coord": "BasicPrograming/test2.c:3:7",
                                 "name": "a"
                             },
                             "op": "==",
                             "right": {
                                 "_nodetype": "Constant",
-                                "coord": "./BasicPrograming/test2.c:3:12",
+                                "coord": "BasicPrograming/test2.c:3:12",
                                 "type": "int",
                                 "value": "6"
                             }
                         },
-                        "coord": "./BasicPrograming/test2.c:3:3",
-                        "iffalse": null,
+                        "coord": "BasicPrograming/test2.c:3:3",
+                        "iffalse": {
+                            "_nodetype": "If",
+                            "cond": {
+                                "_nodetype": "BinaryOp",
+                                "coord": "BasicPrograming/test2.c:7:12",
+                                "left": {
+                                    "_nodetype": "ID",
+                                    "coord": "BasicPrograming/test2.c:7:12",
+                                    "name": "a"
+                                },
+                                "op": "==",
+                                "right": {
+                                    "_nodetype": "Constant",
+                                    "coord": "BasicPrograming/test2.c:7:17",
+                                    "type": "int",
+                                    "value": "7"
+                                }
+                            },
+                            "coord": "BasicPrograming/test2.c:7:8",
+                            "iffalse": null,
+                            "iftrue": {
+                                "_nodetype": "Compound",
+                                "block_items": [
+                                    {
+                                        "_nodetype": "FuncCall",
+                                        "args": {
+                                            "_nodetype": "ExprList",
+                                            "coord": "BasicPrograming/test2.c:9:12",
+                                            "exprs": [
+                                                {
+                                                    "_nodetype": "Constant",
+                                                    "coord": "BasicPrograming/test2.c:9:12",
+                                                    "type": "string",
+                                                    "value": "\"test\""
+                                                }
+                                            ]
+                                        },
+                                        "coord": "BasicPrograming/test2.c:9:5",
+                                        "name": {
+                                            "_nodetype": "ID",
+                                            "coord": "BasicPrograming/test2.c:9:5",
+                                            "name": "printf"
+                                        }
+                                    }
+                                ],
+                                "coord": "BasicPrograming/test2.c:8:1"
+                            }
+                        },
                         "iftrue": {
                             "_nodetype": "Compound",
                             "block_items": [
@@ -34,36 +81,36 @@
                                     "_nodetype": "FuncCall",
                                     "args": {
                                         "_nodetype": "ExprList",
-                                        "coord": "./BasicPrograming/test2.c:5:12",
+                                        "coord": "BasicPrograming/test2.c:5:12",
                                         "exprs": [
                                             {
                                                 "_nodetype": "Constant",
-                                                "coord": "./BasicPrograming/test2.c:5:12",
+                                                "coord": "BasicPrograming/test2.c:5:12",
                                                 "type": "string",
                                                 "value": "\"test\""
                                             }
                                         ]
                                     },
-                                    "coord": "./BasicPrograming/test2.c:5:5",
+                                    "coord": "BasicPrograming/test2.c:5:5",
                                     "name": {
                                         "_nodetype": "ID",
-                                        "coord": "./BasicPrograming/test2.c:5:5",
+                                        "coord": "BasicPrograming/test2.c:5:5",
                                         "name": "printf"
                                     }
                                 }
                             ],
-                            "coord": "./BasicPrograming/test2.c:4:1"
+                            "coord": "BasicPrograming/test2.c:4:1"
                         }
                     }
                 ],
-                "coord": "./BasicPrograming/test2.c:2:1"
+                "coord": "BasicPrograming/test2.c:2:1"
             },
-            "coord": "./BasicPrograming/test2.c:1:5",
+            "coord": "BasicPrograming/test2.c:1:5",
             "decl": {
                 "_nodetype": "Decl",
                 "align": [],
                 "bitsize": null,
-                "coord": "./BasicPrograming/test2.c:1:5",
+                "coord": "BasicPrograming/test2.c:1:5",
                 "funcspec": [],
                 "init": null,
                 "name": "test",
@@ -73,13 +120,13 @@
                     "_nodetype": "FuncDecl",
                     "args": {
                         "_nodetype": "ParamList",
-                        "coord": "./BasicPrograming/test2.c:1:14",
+                        "coord": "BasicPrograming/test2.c:1:14",
                         "params": [
                             {
                                 "_nodetype": "Decl",
                                 "align": [],
                                 "bitsize": null,
-                                "coord": "./BasicPrograming/test2.c:1:14",
+                                "coord": "BasicPrograming/test2.c:1:14",
                                 "funcspec": [],
                                 "init": null,
                                 "name": "a",
@@ -88,12 +135,12 @@
                                 "type": {
                                     "_nodetype": "TypeDecl",
                                     "align": null,
-                                    "coord": "./BasicPrograming/test2.c:1:14",
+                                    "coord": "BasicPrograming/test2.c:1:14",
                                     "declname": "a",
                                     "quals": [],
                                     "type": {
                                         "_nodetype": "IdentifierType",
-                                        "coord": "./BasicPrograming/test2.c:1:10",
+                                        "coord": "BasicPrograming/test2.c:1:10",
                                         "names": [
                                             "int"
                                         ]
@@ -102,16 +149,135 @@
                             }
                         ]
                     },
-                    "coord": "./BasicPrograming/test2.c:1:5",
+                    "coord": "BasicPrograming/test2.c:1:5",
                     "type": {
                         "_nodetype": "TypeDecl",
                         "align": null,
-                        "coord": "./BasicPrograming/test2.c:1:5",
+                        "coord": "BasicPrograming/test2.c:1:5",
                         "declname": "test",
                         "quals": [],
                         "type": {
                             "_nodetype": "IdentifierType",
-                            "coord": "./BasicPrograming/test2.c:1:1",
+                            "coord": "BasicPrograming/test2.c:1:1",
+                            "names": [
+                                "int"
+                            ]
+                        }
+                    }
+                }
+            },
+            "param_decls": null
+        },
+        {
+            "_nodetype": "FuncDef",
+            "body": {
+                "_nodetype": "Compound",
+                "block_items": [
+                    {
+                        "_nodetype": "If",
+                        "cond": {
+                            "_nodetype": "BinaryOp",
+                            "coord": "BasicPrograming/test2.c:14:7",
+                            "left": {
+                                "_nodetype": "ID",
+                                "coord": "BasicPrograming/test2.c:14:7",
+                                "name": "a"
+                            },
+                            "op": "==",
+                            "right": {
+                                "_nodetype": "Constant",
+                                "coord": "BasicPrograming/test2.c:14:12",
+                                "type": "int",
+                                "value": "6"
+                            }
+                        },
+                        "coord": "BasicPrograming/test2.c:14:3",
+                        "iffalse": null,
+                        "iftrue": {
+                            "_nodetype": "Compound",
+                            "block_items": [
+                                {
+                                    "_nodetype": "FuncCall",
+                                    "args": {
+                                        "_nodetype": "ExprList",
+                                        "coord": "BasicPrograming/test2.c:16:12",
+                                        "exprs": [
+                                            {
+                                                "_nodetype": "Constant",
+                                                "coord": "BasicPrograming/test2.c:16:12",
+                                                "type": "string",
+                                                "value": "\"test\""
+                                            }
+                                        ]
+                                    },
+                                    "coord": "BasicPrograming/test2.c:16:5",
+                                    "name": {
+                                        "_nodetype": "ID",
+                                        "coord": "BasicPrograming/test2.c:16:5",
+                                        "name": "printf"
+                                    }
+                                }
+                            ],
+                            "coord": "BasicPrograming/test2.c:15:1"
+                        }
+                    }
+                ],
+                "coord": "BasicPrograming/test2.c:13:1"
+            },
+            "coord": "BasicPrograming/test2.c:12:5",
+            "decl": {
+                "_nodetype": "Decl",
+                "align": [],
+                "bitsize": null,
+                "coord": "BasicPrograming/test2.c:12:5",
+                "funcspec": [],
+                "init": null,
+                "name": "test2",
+                "quals": [],
+                "storage": [],
+                "type": {
+                    "_nodetype": "FuncDecl",
+                    "args": {
+                        "_nodetype": "ParamList",
+                        "coord": "BasicPrograming/test2.c:12:15",
+                        "params": [
+                            {
+                                "_nodetype": "Decl",
+                                "align": [],
+                                "bitsize": null,
+                                "coord": "BasicPrograming/test2.c:12:15",
+                                "funcspec": [],
+                                "init": null,
+                                "name": "a",
+                                "quals": [],
+                                "storage": [],
+                                "type": {
+                                    "_nodetype": "TypeDecl",
+                                    "align": null,
+                                    "coord": "BasicPrograming/test2.c:12:15",
+                                    "declname": "a",
+                                    "quals": [],
+                                    "type": {
+                                        "_nodetype": "IdentifierType",
+                                        "coord": "BasicPrograming/test2.c:12:11",
+                                        "names": [
+                                            "int"
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "coord": "BasicPrograming/test2.c:12:5",
+                    "type": {
+                        "_nodetype": "TypeDecl",
+                        "align": null,
+                        "coord": "BasicPrograming/test2.c:12:5",
+                        "declname": "test2",
+                        "quals": [],
+                        "type": {
+                            "_nodetype": "IdentifierType",
+                            "coord": "BasicPrograming/test2.c:12:1",
                             "names": [
                                 "int"
                             ]
@@ -130,11 +296,11 @@
                         "_nodetype": "Decl",
                         "align": [],
                         "bitsize": null,
-                        "coord": "./BasicPrograming/test2.c:11:7",
+                        "coord": "BasicPrograming/test2.c:21:7",
                         "funcspec": [],
                         "init": {
                             "_nodetype": "Constant",
-                            "coord": "./BasicPrograming/test2.c:11:12",
+                            "coord": "BasicPrograming/test2.c:21:12",
                             "type": "int",
                             "value": "6"
                         },
@@ -144,12 +310,12 @@
                         "type": {
                             "_nodetype": "TypeDecl",
                             "align": null,
-                            "coord": "./BasicPrograming/test2.c:11:7",
+                            "coord": "BasicPrograming/test2.c:21:7",
                             "declname": "aa",
                             "quals": [],
                             "type": {
                                 "_nodetype": "IdentifierType",
-                                "coord": "./BasicPrograming/test2.c:11:3",
+                                "coord": "BasicPrograming/test2.c:21:3",
                                 "names": [
                                     "int"
                                 ]
@@ -160,41 +326,41 @@
                         "_nodetype": "FuncCall",
                         "args": {
                             "_nodetype": "ExprList",
-                            "coord": "./BasicPrograming/test2.c:12:8",
+                            "coord": "BasicPrograming/test2.c:22:8",
                             "exprs": [
                                 {
                                     "_nodetype": "ID",
-                                    "coord": "./BasicPrograming/test2.c:12:8",
+                                    "coord": "BasicPrograming/test2.c:22:8",
                                     "name": "aa"
                                 }
                             ]
                         },
-                        "coord": "./BasicPrograming/test2.c:12:3",
+                        "coord": "BasicPrograming/test2.c:22:3",
                         "name": {
                             "_nodetype": "ID",
-                            "coord": "./BasicPrograming/test2.c:12:3",
+                            "coord": "BasicPrograming/test2.c:22:3",
                             "name": "test"
                         }
                     },
                     {
                         "_nodetype": "Return",
-                        "coord": "./BasicPrograming/test2.c:13:3",
+                        "coord": "BasicPrograming/test2.c:23:3",
                         "expr": {
                             "_nodetype": "Constant",
-                            "coord": "./BasicPrograming/test2.c:13:10",
+                            "coord": "BasicPrograming/test2.c:23:10",
                             "type": "int",
                             "value": "0"
                         }
                     }
                 ],
-                "coord": "./BasicPrograming/test2.c:10:1"
+                "coord": "BasicPrograming/test2.c:20:1"
             },
-            "coord": "./BasicPrograming/test2.c:9:5",
+            "coord": "BasicPrograming/test2.c:19:5",
             "decl": {
                 "_nodetype": "Decl",
                 "align": [],
                 "bitsize": null,
-                "coord": "./BasicPrograming/test2.c:9:5",
+                "coord": "BasicPrograming/test2.c:19:5",
                 "funcspec": [],
                 "init": null,
                 "name": "main",
@@ -204,12 +370,12 @@
                     "_nodetype": "FuncDecl",
                     "args": {
                         "_nodetype": "ParamList",
-                        "coord": "./BasicPrograming/test2.c:0:1",
+                        "coord": "BasicPrograming/test2.c:0:1",
                         "params": [
                             {
                                 "_nodetype": "Typename",
                                 "align": null,
-                                "coord": "./BasicPrograming/test2.c:0:1",
+                                "coord": "BasicPrograming/test2.c:0:1",
                                 "name": null,
                                 "quals": [],
                                 "type": {
@@ -220,7 +386,7 @@
                                     "quals": [],
                                     "type": {
                                         "_nodetype": "IdentifierType",
-                                        "coord": "./BasicPrograming/test2.c:9:10",
+                                        "coord": "BasicPrograming/test2.c:19:10",
                                         "names": [
                                             "void"
                                         ]
@@ -229,16 +395,16 @@
                             }
                         ]
                     },
-                    "coord": "./BasicPrograming/test2.c:9:5",
+                    "coord": "BasicPrograming/test2.c:19:5",
                     "type": {
                         "_nodetype": "TypeDecl",
                         "align": null,
-                        "coord": "./BasicPrograming/test2.c:9:5",
+                        "coord": "BasicPrograming/test2.c:19:5",
                         "declname": "main",
                         "quals": [],
                         "type": {
                             "_nodetype": "IdentifierType",
-                            "coord": "./BasicPrograming/test2.c:9:1",
+                            "coord": "BasicPrograming/test2.c:19:1",
                             "names": [
                                 "int"
                             ]
