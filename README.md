@@ -7,3 +7,7 @@ AST를 핥짝해보자
 
 Example JSON
 -> python3 ./BasicPrograming/generate_ast.py ./BasicPrograming/ExampleCode.c 실행
+
+AST_parser 작동방법
+gcc -o AST AST_parsing.c
+./AST {Json파일이름}
