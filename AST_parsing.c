@@ -1,12 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cJSON.h"
+#include "cJSON.c"
+// void Function_Count(char *json_string, long file_size);
+// void Return_Type(char *json_string, long file_size);
+// void Function_Name(char *json_string, long file_size);
+// void Function_Param(char *json_string, long file_size);
+void IF_Count(char *json_string, long file_size)
+{
+    cJSON *root = cJSON_Parse(json_string);
+    cJSON *ext = NULL;
+    cJSON *idx_JSON = NULL;
+    cJSON *nodetype = NULL;
+    if (root == NULL)
+    {
+        printf("JSON 파싱실패 root가 존재하지 않음");
+        free(json_string);
+    }
+    else
+    {
+        ext = cJSON_GetObjectItem(root, "ext");
+        if (ext == NULL)
+        {
+            printf("ext가 존재하지 않음");
+            cJSON_Delete(root);
+        }
+        long arr_size = cJSON_GetArraySize(ext);
+        for (long idx = 0; idx < arr_size; idx++)
+        {
+            idx_JSON = cJSON_GetArrayItem(ext, idx);
+            if (idx_JSON == NULL)
+            {
+                printf("idx_JSON이 존재하지 않음");
+                cJSON_Delete(root);
+            }
+            nodetype = cJSON_GetObjectItem(idx_JSON, "_nodetype");
+            printf("%s", cJSON_Print(nodetype));
+        }
+    }
 
-void Function_Count(char *json_string, long file_size);
-void Return_Type(char *json_string, long file_size);
-void Function_Name(char *json_string, long file_size);
-void Function_Param(char *json_string, long file_size);
-void IF_Count(char *json_string, long file_size);
+    cJSON_Delete(root);
+};
 
 int main(int argc, char *argv[])
 {
@@ -51,10 +85,10 @@ int main(int argc, char *argv[])
     // }
     // cJSON_Delete(root);
 
-    Function_Count(json_string, file_size);
-    Return_Type(json_string, file_size);
-    Function_Name(json_string, file_size);
-    Function_Param(json_string, file_size);
+    // Function_Count(json_string, file_size);
+    // Return_Type(json_string, file_size);
+    // Function_Name(json_string, file_size);
+    // Function_Param(json_string, file_size);
     IF_Count(json_string, file_size);
 
     free(json_string);

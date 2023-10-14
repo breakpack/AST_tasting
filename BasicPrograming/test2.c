@@ -1,6 +1,9 @@
 int test(int a)
 {
-  return a + 1;
+  if (a == 6)
+  {
+    printf("test");
+  }
 }
 
 int main(void)
