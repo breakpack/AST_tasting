@@ -5,7 +5,53 @@
 // void Function_Count(char *json_string, long file_size);
 // void Return_Type(char *json_string, long file_size);
 // void Function_Name(char *json_string, long file_size);
-// void Function_Param(char *json_string, long file_size);
+
+// 각 기능들에 대한 파라미터 타입과 이름을 추출하는 함수
+void Function_Param(char *json_string)
+{
+    cJSON *json = cJSON_Parse(json_string);              // JSON 문자열 파싱
+    cJSON *functions = cJSON_GetObjectItem(json, "ext"); // 'ext' 항목 가져오기
+
+    int function_count = 0;
+
+    for (int i = 0; i < cJSON_GetArraySize(functions); i++)
+    {
+        function_count++;
+        printf("Function %d parameters:\n", function_count);
+
+        // 각 함수에서 'args' 객체와 그 안의 'params' 배열 가져오기
+        cJSON *funcDecl =
+            cJSON_GetObjectItem(cJSON_GetObjectItem(cJSON_GetArrayItem(functions, i), "decl"), "type");
+        cJSON *parameters =
+            cJSON_GetObjectItem(funcDecl, "args");
+
+        if (parameters != NULL)
+        { // args가 있는 경우만 처리
+            parameters = cJSON_GetObjectItem(parameters, "params");
+
+            // 각 파라미터를 순회하며 타입과 이름 출력하기
+            for (int j = 0; j < cJSON_GetArraySize(parameters); j++)
+            {
+                printf("\tParameter %d type: %s\n", j + 1,
+                       cJSON_PrintUnformatted(
+                           cJSON_GetArrayItem(
+                               cJSON_GetObjectItem(
+                                   cJSON_GetObjectItem(
+                                       cJSON_GetArrayItem(parameters, j),
+                                       "type"),
+                                   "names"),
+                               0)));
+
+                printf("\tParameter %d name: %s\n", j + 1,
+                       cJSON_PrintUnformatted(
+                           cJSON_GetObjectItem(cJSON_GetArrayItem(parameters, j), "name")));
+            }
+        }
+    }
+
+    // JSON 객체 삭제하기
+    cJSON_Delete(json);
+}
 void IF_Count(char *json_string, long file_size)
 {
     cJSON *root = cJSON_Parse(json_string);
