@@ -32,6 +32,7 @@ void IF_Count(char *json_string, long file_size)
                 printf("idx_JSON이 존재하지 않음");
                 cJSON_Delete(root);
             }
+
             cJSON *nodetype = cJSON_GetObjectItem(idx_JSON, "_nodetype");
             if (strcmp(nodetype->valuestring, "FuncDef") == 0)
             {
@@ -57,15 +58,19 @@ void IF_Count(char *json_string, long file_size)
                         if (!cJSON_IsNull(iffalse))
                         {
                             cJSON *block_items_nodetype = cJSON_GetObjectItem(iffalse, "_nodetype");
-                            if (strcmp(block_items_nodetype->valuestring, "If") == 0)
+                            if (cJSON_IsString(block_items_nodetype))
                             {
-                                count_elseif++;
+                                if (strcmp(block_items_nodetype->valuestring, "If") == 0)
+                                {
+
+                                    count_elseif++;
+                                }
                             }
                         }
                     }
                 }
                 cJSON *name = cJSON_GetObjectItem(decl, "name");
-                printf("function name : %s\n\tcount if = %d\n\t\tcount else if = %d\n", cJSON_Print(name), count_if, count_elseif);
+                printf("function name : %s\n\tcount if = %d\n\tcount else if = %d\n", cJSON_Print(name), count_if, count_elseif);
             }
         }
     }
