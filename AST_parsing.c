@@ -2,46 +2,116 @@
 #include <stdlib.h>
 #include "cJSON.h"
 #include "cJSON.c"
+#include <string.h>
 
-/*각 기능들에 대한 파라미터 타입과 이름을 추출하는 함수*/
-void Function_Param(char *json_string, long i)
+void Function_Param_Helper(const cJSON *function)
 {
-    cJSON *json = cJSON_Parse(json_string);              // JSON 문자열 파싱
-    cJSON *functions = cJSON_GetObjectItem(json, "ext"); // 'ext' 항목 가져오기
+    const cJSON *decl = cJSON_GetObjectItem(function, "decl");
+    if (decl == NULL)
+        return;
 
-    // 각 함수에서 'args' 객체와 그 안의 'params' 배열 가져오기
-    cJSON *funcDecl =
-        cJSON_GetObjectItem(cJSON_GetObjectItem(cJSON_GetArrayItem(functions, i), "decl"), "type");
-    cJSON *parameters =
-        cJSON_GetObjectItem(funcDecl, "args");
+    const cJSON *type = cJSON_GetObjectItem(decl, "type");
+    if (type == NULL)
+        return;
 
-    if (parameters != NULL)
-    { // args가 있는 경우만 처리
-        parameters = cJSON_GetObjectItem(parameters, "params");
+    const cJSON *args = cJSON_GetObjectItem(type, "args");
+    if (args == NULL)
+        return;
 
-        // 각 파라미터를 순회하며 타입과 이름 출력하기
-        for (int j = 0; j < cJSON_GetArraySize(parameters); j++)
+    const cJSON *params = cJSON_GetObjectItem(args, "params");
+    if (params == NULL)
+        return;
+
+    int param_count = 0;
+    cJSON *param;
+    cJSON_ArrayForEach(param, params)
+    {
+        param_count++;
+        printf("\tParameter %d:\n", param_count);
+
+        cJSON *param_type = cJSON_GetObjectItem(param, "type");
+        if (param_type != NULL)
         {
-            printf("\tParameter %d type: %s\n", j + 1,
-                   cJSON_PrintUnformatted(
-                       cJSON_GetArrayItem(
-                           cJSON_GetObjectItem(
-                               cJSON_GetObjectItem(
-                                   cJSON_GetArrayItem(parameters, j),
-                                   "type"),
-                               "names"),
-                           0)));
+            cJSON *identifierType = cJSON_GetObjectItem(param_type, "type");
+            if (identifierType != NULL)
+            {
+                cJSON *names = cJSON_GetObjectItem(identifierType, "names");
+                if (names != NULL)
+                {
+                    cJSON *nameType = cJSON_GetArrayItem(names, 0);
+                    if (nameType != NULL)
+                    {
+                        printf("\t\tType: %s\n", nameType->valuestring);
+                    }
+                }
+            }
+        }
 
-            printf("\tParameter %d name: %s\n", j + 1,
-                   cJSON_PrintUnformatted(
-                       cJSON_GetObjectItem(cJSON_GetArrayItem(parameters, j), "name")));
+        cJSON *name = cJSON_GetObjectItem(param, "name");
+        if (name != NULL)
+        {
+            printf("\t\tparameter Name: %s\n", name->valuestring);
+        }
+    }
+}
+
+int IF_Count_Help(cJSON *node)
+{
+    int count_if = 0;
+    cJSON *block_items = cJSON_GetObjectItem(node, "block_items");
+
+    long sizeof_block_items = cJSON_GetArraySize(block_items);
+
+    for (long block_items_idx = 0; block_items_idx < sizeof_block_items; block_items_idx++)
+    {
+        cJSON *items = cJSON_GetArrayItem(block_items, block_items_idx);
+        cJSON *block_items_nodetype = cJSON_GetObjectItem(items, "_nodetype");
+        if (strcmp(block_items_nodetype->valuestring, "If") == 0)
+        {
+            count_if++;
+        }
+        if (count_if > 0)
+        {
+            cJSON *iftrue = cJSON_GetObjectItem(items, "iftrue");
+            cJSON *iffalse = cJSON_GetObjectItem(items, "iffalse");
+            if (!cJSON_IsNull(iftrue))
+            {
+                count_if += IF_Count_Help(iftrue);
+            }
+            if (!cJSON_IsNull(iffalse))
+            {
+                count_if += IF_Count_Help(iffalse);
+            }
         }
     }
 
-    // JSON 객체 삭제하기
-    cJSON_Delete(json);
+    return count_if;
 }
+int elseIF_Count_Help(cJSON *node)
+{
 
+    cJSON *block_items = cJSON_GetObjectItem(node, "block_items");
+    long sizeof_block_items = cJSON_GetArraySize(block_items);
+    int count_if = 0;
+    int count_elseif = 0;
+
+    for (long block_items_idx = 0; block_items_idx < sizeof_block_items; block_items_idx++)
+    {
+        cJSON *items = cJSON_GetArrayItem(block_items, block_items_idx);
+        cJSON *block_items_nodetype = cJSON_GetObjectItem(items, "_nodetype");
+        if (strcmp(block_items_nodetype->valuestring, "If") == 0)
+        {
+            cJSON *iffalse = cJSON_GetObjectItem(items, "iffalse");
+            if (!cJSON_IsNull(iffalse))
+            {
+                count_elseif++;
+                count_elseif += elseIF_Count_Help(iffalse);
+            }
+        }
+    }
+
+    return count_elseif;
+}
 /*각 함수의 if문 카운트*/
 void IF_Count(char *json_string, long file_size, long idx)
 {
@@ -59,6 +129,7 @@ void IF_Count(char *json_string, long file_size, long idx)
             printf("ext가 존재하지 않음");
             cJSON_Delete(root);
         }
+
         long arr_size = cJSON_GetArraySize(ext);
         cJSON *idx_JSON = cJSON_GetArrayItem(ext, idx);
         if (idx_JSON == NULL)
@@ -72,37 +143,8 @@ void IF_Count(char *json_string, long file_size, long idx)
         {
             cJSON *decl = cJSON_GetObjectItem(idx_JSON, "decl");
             cJSON *body = cJSON_GetObjectItem(idx_JSON, "body");
-            cJSON *block_items = cJSON_GetObjectItem(body, "block_items");
-
-            long sizeof_block_items = cJSON_GetArraySize(block_items);
-            int count_if = 0;
-            int count_elseif = 0;
-
-            for (long block_items_idx = 0; block_items_idx < sizeof_block_items; block_items_idx++)
-            {
-                cJSON *items = cJSON_GetArrayItem(block_items, block_items_idx);
-                cJSON *block_items_nodetype = cJSON_GetObjectItem(items, "_nodetype");
-                if (strcmp(block_items_nodetype->valuestring, "If") == 0)
-                {
-                    count_if++;
-                }
-                if (count_if > 0)
-                {
-                    cJSON *iffalse = cJSON_GetObjectItem(items, "iffalse");
-                    if (!cJSON_IsNull(iffalse))
-                    {
-                        cJSON *block_items_nodetype = cJSON_GetObjectItem(iffalse, "_nodetype");
-                        if (cJSON_IsString(block_items_nodetype))
-                        {
-                            if (strcmp(block_items_nodetype->valuestring, "If") == 0)
-                            {
-
-                                count_elseif++;
-                            }
-                        }
-                    }
-                }
-            }
+            int count_if = IF_Count_Help(body);
+            int count_elseif = elseIF_Count_Help(body);
             cJSON *name = cJSON_GetObjectItem(decl, "name");
             printf("function name : %s\n\tcount if = %d\n\tcount else if = %d\n", cJSON_Print(name), count_if, count_elseif);
         }
@@ -293,13 +335,18 @@ int main(int argc, char *argv[])
         return 0;
     }
     long arr_size = cJSON_GetArraySize(ext);
-    for (long idx = 0; idx < arr_size; idx++)
+
+    cJSON *function;
+    long idx = 0;
+    cJSON_ArrayForEach(function, ext)
     {
+
         printf("[*]%ld\n", idx);
 
         IF_Count(json_string, file_size, idx);
-        Function_Param(json_string, idx);
+        Function_Param_Helper(function);
         Return_Type(json_string, file_size, idx);
+        idx++;
     }
 
     free(json_string);
