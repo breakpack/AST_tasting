@@ -127,12 +127,12 @@ void Return_Type(char *json_string, long file_size, long idx)
             if (strcmp(funcName->valuestring, "Constant") == 0) // return을 어떤 값으로 보내줄 때 그 보내는 값의 type을 출력
             {
                 cJSON *funcType = cJSON_GetObjectItem(cJSON_GetObjectItem(funcBlockPosition, "expr"), "type");
-                printf("return type: %s\n", funcType->valuestring);
+                printf("\treturn type: %s\n", funcType->valuestring);
             }
             else if (strcmp(funcName->valuestring, "ID") == 0) // return을 변수를 이용해 보내줄 때 그 변수명을 출력
             {
                 cJSON *funcName = cJSON_GetObjectItem(cJSON_GetObjectItem(funcBlockPosition, "expr"), "name");
-                printf("return name: %s\n", funcName->valuestring);
+                printf("\treturn name: %s\n", funcName->valuestring);
             }
             else if (strcmp(funcName->valuestring, "FuncCall") == 0) // return으로 함수 호출 할 때 호출한 함수 이름 출력
             {
