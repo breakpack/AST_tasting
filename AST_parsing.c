@@ -4,6 +4,47 @@
 #include "cJSON.c"
 #include <string.h>
 
+/*각 함수의 if문 카운트*/
+int Func_count(char *json_string, long file_size)
+{
+    int count = 0;
+    cJSON *root = cJSON_Parse(json_string);
+    if (root == NULL)
+    {
+        printf("JSON 파싱실패 root가 존재하지 않음");
+        free(json_string);
+    }
+    else
+    {
+        cJSON *ext = cJSON_GetObjectItem(root, "ext");
+        if (ext == NULL)
+        {
+            printf("ext가 존재하지 않음");
+            cJSON_Delete(root);
+        }
+
+        long arr_size = cJSON_GetArraySize(ext);
+        for (int i = 0; i < arr_size; i++)
+        {
+            cJSON *idx_JSON = cJSON_GetArrayItem(ext, i);
+            if (idx_JSON == NULL)
+            {
+                printf("idx_JSON이 존재하지 않음");
+                cJSON_Delete(root);
+            }
+
+            cJSON *nodetype = cJSON_GetObjectItem(idx_JSON, "_nodetype");
+            if (strcmp(nodetype->valuestring, "FuncDef") == 0)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    cJSON_Delete(root);
+};
+
 void Function_Param_Helper(const cJSON *function)
 {
     const cJSON *decl = cJSON_GetObjectItem(function, "decl");
@@ -112,6 +153,44 @@ int elseIF_Count_Help(cJSON *node)
 
     return count_elseif;
 }
+/*함수 이름 출력*/
+void Function_name(char *json_string, long file_size, long idx)
+{
+    cJSON *root = cJSON_Parse(json_string);
+    if (root == NULL)
+    {
+        printf("JSON 파싱실패 root가 존재하지 않음");
+        free(json_string);
+    }
+    else
+    {
+        cJSON *ext = cJSON_GetObjectItem(root, "ext");
+        if (ext == NULL)
+        {
+            printf("ext가 존재하지 않음");
+            cJSON_Delete(root);
+        }
+
+        long arr_size = cJSON_GetArraySize(ext);
+        cJSON *idx_JSON = cJSON_GetArrayItem(ext, idx);
+        if (idx_JSON == NULL)
+        {
+            printf("idx_JSON이 존재하지 않음");
+            cJSON_Delete(root);
+        }
+
+        cJSON *nodetype = cJSON_GetObjectItem(idx_JSON, "_nodetype");
+        if (strcmp(nodetype->valuestring, "FuncDef") == 0)
+        {
+            cJSON *decl = cJSON_GetObjectItem(idx_JSON, "decl");
+            cJSON *body = cJSON_GetObjectItem(idx_JSON, "body");
+            cJSON *name = cJSON_GetObjectItem(decl, "name");
+            printf("function name : %s\n", cJSON_Print(name));
+        }
+    }
+
+    cJSON_Delete(root);
+};
 /*각 함수의 if문 카운트*/
 void IF_Count(char *json_string, long file_size, long idx)
 {
@@ -145,8 +224,7 @@ void IF_Count(char *json_string, long file_size, long idx)
             cJSON *body = cJSON_GetObjectItem(idx_JSON, "body");
             int count_if = IF_Count_Help(body);
             int count_elseif = elseIF_Count_Help(body);
-            cJSON *name = cJSON_GetObjectItem(decl, "name");
-            printf("function name : %s\n\tcount if = %d\n\tcount else if = %d\n", cJSON_Print(name), count_if, count_elseif);
+            printf("\tcount if = %d\n\tcount else if = %d\n", count_if, count_elseif);
         }
     }
 
@@ -338,11 +416,13 @@ int main(int argc, char *argv[])
 
     cJSON *function;
     long idx = 0;
+    int Function_count = Func_count(json_string, file_size);
+    printf("number of Function : %d \n", Function_count);
     cJSON_ArrayForEach(function, ext)
     {
 
         printf("[*]%ld\n", idx);
-
+        Function_name(json_string, file_size, idx);
         IF_Count(json_string, file_size, idx);
         Function_Param_Helper(function);
         Return_Type(json_string, file_size, idx);
